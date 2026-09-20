@@ -2,7 +2,6 @@ export interface Author {
     id: number;
     name: string;
     email: string,
-    // books: string[]
 }
 
 export interface Book {
@@ -10,5 +9,5 @@ export interface Book {
     authorId: number;
     title: string;
     genre: string;
-    releaseDate: string; 
+    year: string; 
 }
