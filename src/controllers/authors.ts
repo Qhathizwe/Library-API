@@ -31,10 +31,10 @@ export const getBooksByAutherId =
         if (!authorBooks) {
             return res.status(404).send("Auther's Books are not found!.")
         }
-          res.status(200).json({
-        ...author,
-        books: authorBooks
-    });
+        res.status(200).json({
+            ...author,
+            books: authorBooks
+        });
     }
 
 
@@ -47,34 +47,34 @@ export const createNewAuthor =
         res.status(200).json(newAuthor)
     }
 
-export const updateAutherById = 
-(req: Request, res: Response)=>{
-    const {id} = req.params;
-    const {name, email} = req.body;
+export const updateAutherById =
+    (req: Request, res: Response) => {
+        const { id } = req.params;
+        const { name, email } = req.body;
 
-    const author = authors.find((a) => a.id === parseInt(id as string)) ;
+        const author = authors.find((a) => a.id === parseInt(id as string));
 
-    if(!author) {
-        return res.status(404).json({message: "The author is not Found"})
+        if (!author) {
+            return res.status(404).json({ message: "The author is not Found" })
+        }
+        author.name = name ?? author.name;
+        author.email = email ?? author.email;
+        
+        res.status(200).json({ message: "Author updated successfully", author });
+
     }
-     author.name = name?? author.name;
-     author.email = email ?? author.email;
 
-     res.status(200).json({ message: "Author updated successfully", author });
+export const deleteAutherById =
+    (req: Request, res: Response) => {
+        const { id } = req.params
 
-}
+        const index = authors.findIndex((i) => i.id === parseInt(id as string))
 
-export const deleteAutherById = 
-(req: Request, res: Response ) => {
-    const {id} = req.params
+        if (index === -1) {
+            return res.status(400).json({ message: `author ${id} not found` })
+        }
+        authors.splice(index, 1)
 
-    const index = authors.findIndex((i) => i.id === parseInt(id as string))
+        res.status(200).json({ message: "Author deleted successfully" })
 
-    if (index === -1 ){
-        return res.status(400).json({message: `author ${id} not found`})
     }
-    authors.splice(index, 1)
-
-    res.status(200).json({message: "Author deleted successfully"})
-
-}
