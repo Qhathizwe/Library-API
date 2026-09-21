@@ -30,3 +30,36 @@ export const createNewBook =
         books.push(newBook);
         res.status(201).json(newBook)
     }
+
+export const deleteBookById =
+    (req: Request, res: Response) => {
+        const { id } = req.params
+        const index = books.findIndex((b) => b.id === parseInt(id as string))
+
+        if (index === -1){
+            return res.status(400).json({message: `book ${id} not found`})
+        }
+        books.splice(index, 1)
+
+        res.status(200).json({message: "Books deleted successfully"})
+    }
+
+export const editBookById =
+    (req: Request, res: Response) => {
+        const { id } = req.params;
+        const {authorId, title, genre, year} = req.body;
+
+        const book = books.find((b)=> b.id === parseInt(id as string))
+
+        if (!book){
+            return res.status(404).json ({message: "the book is not found"})
+        }
+
+        book.authorId = name?? book.authorId;
+        book.title = name?? book.title;
+        book.genre = genre?? book.genre;
+        book.year = genre?? book.year
+
+        res.status(200).json({message: "book updated successfullly", book})
+
+    }
