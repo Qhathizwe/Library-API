@@ -31,7 +31,7 @@ router.get(
             body("authorId").isInt().withMessage("Write authors ID"),
             body("title").notEmpty().withMessage("title is required."),
             body("genre").notEmpty().withMessage("Must specify the genre of the book"),
-            body("year").notEmpty().withMessage("Specify the release year of book")
+            body("year").isISO8601().withMessage("Year must be a valid date format : (yyyy-mm-dd)")
         ],
         (req: Request, res: Response) =>{
 
