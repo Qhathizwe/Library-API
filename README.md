@@ -2,7 +2,7 @@
 
 📚 Library API
 
-https://socialify.git.ci/Qhathizwe/Library-API/image?language=1&owner=1&name=1&stargazers=1&theme=Light
+<img src="https://socialify.git.ci/Qhathizwe/Library-API/image?language=1&owner=1&name=1&stargazers=1&theme=Light" alt="Library-API" width="640" height="320" />
 
 A RESTful API designed to help librarians manage a library's collection of books and authors. The system provides functionality for adding new titles and authors, searching the library catalogue, updating incorrect or outdated book information, and removing historical records.
 
