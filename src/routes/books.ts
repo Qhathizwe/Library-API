@@ -2,6 +2,7 @@ import {Router, type Request, type Response} from 'express'
 import {body, param, validationResult} from 'express-validator'
 
 import { type Book } from '../types.js'
+import { editBookById, deleteBookById } from '../controllers/books.js';
 
 import { getAllBooks, getBookById, createNewBook } from '../controllers/books.js';
 import { resolve } from 'url';
@@ -45,6 +46,33 @@ router.get(
         }
         )
 
+    router.put("/:id",
+    [
+        body("authorId").optional().isInt().withMessage("authorId must be an integer"),
+        body("title").optional().isEmail().withMessage("tite must be there"),
+        body("genre").optional().isEmail().withMessage("genre must be there"),
+        body("year").optional().isISO8601().withMessage("Year must be a valid date format : (yyyy-mm-dd)")
+    ],
+    (req: Request, res: Response) => {
+        const errors = validationResult(req)
+        if (!errors.isEmpty){
+            return res.status(400).json({errors: errors.array() })
+        }
+        editBookById(req, res)
+    })
+
+    router.delete("/:id",
+         [param("id").isInt().withMessage("ID must be an integer"),],
+    (req: Request, res: Response ) =>{
+        const errors = validationResult(req)
+
+        if (!errors.isEmpty){
+            return res.status(400).json({errors: errors.array()})
+        }
+        deleteBookById(req, res)
+
+    }
+    )
         export default router 
         
 
