@@ -1,51 +1,48 @@
-import {Router, type Request, type Response} from 'express'
-import {body, param, validationResult} from 'express-validator'
+import { Router, type Request, type Response } from 'express'
+import { body, param, validationResult } from 'express-validator'
 
-import {type Author } from '../types.js'
+import { type Author } from '../types.js'
+
+import { getAllAuthors, getAuthorById, createNewAuthor } from '../controllers/authors.js'
 
 const router = Router()
 
-let authors: Author[] =[];
+let authors: Author[] = [];
 
-router.get("/", (req: Request, res: Response) =>{
-    res.status(200).json(authors);
-});
+router.get("/", getAllAuthors);
 
-router.get(
-    "/:id",
+router.get("/:id",
     [param("id").isInt().withMessage("ID must be an Integer.")],
-    (req: Request, res:Response) => {
+    (req: Request, res: Response) => {
         const errors = validationResult(req);
-        console.log(errors, "errors from express-validator middleware");
 
-        if (!errors.isEmpty()){
-            return res.status(400).json({errors: errors.array()})
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() })
         }
 
-        const {id} = req.params
-        const author = authors.find((author) => author.id === parseInt(id as string));
+        getAuthorById(req, res)
+    }
 
-        if (!author){
-            return res.status(404).send("User not found!.")
-        }
-        res.status(200).json(author);
-    });
+    
+);
 
-    router.post("/", [
-        body("name").notEmpty().withMessage("Name is required"),
-        body("email").isEmail().withMessage("Must be a valid email address")
+router.post("/", 
+    [
+        body("name").notEmpty().withMessage("authorId must be an integer"),
+        body("email").isEmail().withMessage("tite must be there"),
+      
     ],
     (req: Request, res: Response)=>{
         const errors = validationResult(req)
-        if (!errors.isEmpty()){
-            return res.status(400).json({errors: errors.array() });
-        }
-        
-        const {name, email} = req.body;
-        const newAuthor = {id: authors.length + 1, name, email };
 
-        authors.push(newAuthor);
-        res.status(200).json(newAuthor)
+        if (!errors.isEmpty){
+            console.log(errors, "request")
+            return res.status(400).json({errors: errors.array() })
+        }
+
+        createNewAuthor(req, res)
     }
-    )
+    
+ );
 export default router
+
