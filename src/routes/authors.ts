@@ -64,14 +64,13 @@ router.post("/",
 
 router.put("/:id",
     [
-     
         body("name").optional().notEmpty().withMessage("authorId must be an integer"),
         body("email").optional().isEmail().withMessage("tite must be there"),
-
-    ],(req: Request, res: Response) => {
+    ],
+    (req: Request, res: Response) => {
         const errors = validationResult(req)
           if (!errors.isEmpty) {
-            console.log(errors, "request")
+            
             return res.status(400).json({ errors: errors.array() })
         }
         updateAutherById(req, res)
