@@ -3,12 +3,13 @@ import {body, param, validationResult} from 'express-validator'
 
 import { type Book } from '../types.js'
 
+import { getAllBooks, getBookById, createNewBook } from '../controllers/books.js';
+import { resolve } from 'url';
+
 let books: Book[] = [];
 const router = Router()
 
-router.get("/", (req: Request, res: Response)=>{
-    res.status(200).json(books);
-})
+router.get("/", getAllBooks)
 
 router.get(
     "/:id",
@@ -21,13 +22,8 @@ router.get(
             return res.status(400).json({errors:errors.array()})
         }
 
-        const {id} = req.params
-        const book = books.find((book) => book.id === parseInt(id as string));
-
-        if(!book){
-            return res.status(400).send("User not found!")
-        }
-        res.status(200).json(book);
+        getBookById(req, res)
+        
     });
 
     router.post(
@@ -44,12 +40,8 @@ router.get(
             if (!errors.isEmpty()){
                 return res.status(400).json({errors: errors.array() })
             }
-
-            const {authorId, title, genre, year} = req.body;
-            const newBook = {id: books.length + 1, authorId, title, genre, year }
-
-            books.push(newBook);
-            res.status(200).json(newBook)
+           
+            createNewBook(req, res)
         }
         )
 
