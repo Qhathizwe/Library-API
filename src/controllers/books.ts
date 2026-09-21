@@ -3,7 +3,8 @@ import { body, param, validationResult } from 'express-validator'
 
 import { type Book } from '../types.js'
 
-let books: Book[] = [];
+
+export let books: Book[] = [];
 
 export const getAllBooks =
     (req: Request, res: Response) => {
@@ -16,7 +17,7 @@ export const getBookById =
         const book = books.find((book) => book.id === parseInt(id as string));
 
         if (!book) {
-            return res.status(400).send("User not found!")
+            return res.status(400).send("Book not found!")
         }
         res.status(200).json(book);
     }
@@ -27,5 +28,5 @@ export const createNewBook =
         const newBook = { id: books.length + 1, authorId, title, genre, year }
 
         books.push(newBook);
-        res.status(200).json(newBook)
+        res.status(201).json(newBook)
     }
