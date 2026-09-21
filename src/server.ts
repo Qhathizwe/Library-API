@@ -5,6 +5,7 @@ import authorRouter from "./routes/authors.js";
 import bookRouter from "./routes/books.js"
 
 import { loggerMiddleware } from "./middleware/logger.js";
+// import { notFoundHandler } from "./middleware/error.js";
 
 const app: Express = express()
 const PORT = process.env.PORT || 3000
@@ -13,8 +14,10 @@ app.use(express.json());
 app.use(bodyParser.json());
 
 app.use(loggerMiddleware);
-app.use("/v1/authors", authorRouter)
-app.use("/v1/books", bookRouter)
+// app.use(notFoundHandler);
+
+app.use("/v1/authors", authorRouter);
+app.use("/v1/books", bookRouter);
 
 
 app.listen(PORT, ()=>{
