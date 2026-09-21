@@ -3,11 +3,10 @@ import { body, param, validationResult } from 'express-validator'
 
 import { type Author } from '../types.js'
 
-import { getAllAuthors, getAuthorById, createNewAuthor } from '../controllers/authors.js'
+import { getAllAuthors, getAuthorById, createNewAuthor, getBooksByAutherId } from '../controllers/authors.js'
 
 const router = Router()
 
-let authors: Author[] = [];
 
 router.get("/", getAllAuthors);
 
@@ -25,6 +24,21 @@ router.get("/:id",
 
     
 );
+
+router.get(
+    "/:id/books", 
+    [param("id").isInt().withMessage("ID must be an Integer.")],
+    (req: Request, res: Response)=>{
+        const errors = validationResult(req)
+
+        if (!errors.isEmpty){
+           return res.status(400).json({ errors: errors.array() })  
+        }
+        
+        getBooksByAutherId(req, res)
+
+    }
+)
 
 router.post("/", 
     [
